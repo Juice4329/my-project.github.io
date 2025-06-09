@@ -1,0 +1,229 @@
+/* ---------------------------- */
+/* ФОНОВЫЕ ГРАДИЕНТНЫЕ ЗАЛИВКИ */
+/* ---------------------------- */
+.gradient-bg {
+  background: linear-gradient(135deg, #0f766e 0%, #0d9488 50%, #22d3ee 100%);
+}
+
+.gradient-bg-dark {
+  background: linear-gradient(135deg, #064e4e 0%, #0f766e 50%, #0d9488 100%);
+}
+
+/* ---------------------------- */
+/* АНИМАЦИИ КАРТОЧЕК */
+/* ---------------------------- */
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.dark .card-hover:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------------------------- */
+/* ДЕМО-БЛОК ШИФРОВАНИЯ */
+/* ---------------------------- */
+.encryption-demo {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+}
+
+.dark .encryption-demo {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+}
+
+/* ---------------------------- */
+/* ЭФФЕКТ ПЕЧАТАЮЩЕЙ МАШИНКИ */
+/* ---------------------------- */
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: .15em;
+  animation: 
+    typing 3.5s steps(40, end), /* Анимация набора текста */
+    blink-caret .75s step-end infinite; /* Анимация мигания курсора */
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #3b82f6 }
+}
+
+/* ---------------------------- */
+/* ИНДИКАТОР ЗАГРУЗКИ */
+/* ---------------------------- */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: currentColor;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------------------------- */
+/* СТИЛИ ДЛЯ ХЭШ-РЕЗУЛЬТАТОВ */
+/* ---------------------------- */
+.hash-result {
+  word-break: break-all;
+  font-family: monospace;
+}
+
+/* ---------------------------- */
+/* ИНДИКАТОР АКТИВНОЙ ВКЛАДКИ */
+/* ---------------------------- */
+.nav-indicator {
+  position: absolute;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  background-color: #3b82f6;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+/* Подчеркивание при наведении */
+.nav-item {
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background-color: currentColor;
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover::after,
+.nav-item.active::after {
+  width: 100%;
+}
+
+/* Жирный шрифт для активной вкладки */
+.nav-item.active {
+  font-weight: bold;
+}
+
+/* ---------------------------- */
+/* АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ МЕТОДОВ */
+/* ---------------------------- */
+.method-switch {
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.method-switch.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------------------- */
+/* СТИЛИ КНОПКИ КОПИРОВАНИЯ */
+/* ---------------------------- */
+.copy-btn {
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  transform: scale(1.05);
+}
+
+.copy-btn.copied {
+  background-color: #10b981 !important;
+}
+
+/* ---------------------------- */
+/* ПЛАВНЫЕ ПЕРЕХОДЫ ДЛЯ ТЕМ */
+/* ---------------------------- */
+body, .bg-white, .bg-gray-50, .bg-gray-100, .bg-gray-200, .bg-gray-300, 
+.bg-gray-800, .bg-gray-900, .text-gray-800, .text-gray-700, .text-gray-600,
+.border-gray-300, .border-gray-200, .divide-gray-200 {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* ---------------------------- */
+/* ВАЛИДАЦИЯ ФОРМ */
+/* ---------------------------- */
+.input-error {
+  border-color: #ef4444 !important;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: none;
+}
+
+/* Индикатор сложности пароля */
+.password-strength {
+  height: 4px;
+  margin-top: 0.5rem;
+  background-color: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.password-strength-bar {
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.password-requirements {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.requirement {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.requirement i {
+  margin-right: 0.25rem;
+  font-size: 0.6rem;
+}
+
+.requirement.valid {
+  color: #10b981;
+}
+
+.requirement.invalid {
+  color: #6b7280;
+}
+
+/* ---------------------------- */
+/* ОПТИМИЗАЦИЯ ДЛЯ REDUCED MOTION */
+/* ---------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .typewriter, .method-switch, .card-hover, .copy-btn, 
+  .nav-indicator, .spinner, body, * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
