@@ -5,22 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Методы шифрования данных в web-проектах</title>
     
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/style.css">
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css"  rel="stylesheet">
-<script>
-<script src="https://cdn.jsdelivr.net/npm/argon2-browser@1.18.0/dist/argon2-bundled.min.js"></script> 
-<script src="js/theme.js"></script>
-<script src="js/encryption.js"></script>
-  tailwind.config = {
-    darkMode: 'class'
-  }
-</script>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            transitionProperty: {
+              'colors': 'background-color, border-color, color, fill, stroke',
+            },
+            animation: {
+              'spin-slow': 'spin 2s linear infinite', // Пользовательская анимация спиннера
+            }
+          }
+        }
+      }
+    </script>
 
 </head>
 <body class="font-sans antialiased text-gray-800 bg-white dark:bg-gray-900 dark:text-gray-100">
-    <!-- Навигация -->
     <nav class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between">
@@ -31,460 +37,270 @@
                             <span class="font-semibold text-gray-900 dark:text-white text-lg">Web Encryption</span>
                         </a>
                     </div>
-                </div>
-                <div class="hidden md:flex items-center space-x-1 relative">
-                    <!-- Индикатор активной вкладки -->
-                    <div id="navIndicator" class="nav-indicator"></div>
-                    
-                    <a href="#intro" class="nav-item py-4 px-2 text-blue-600 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300 active-tab">Главная</a>
-                    <a href="#methods" class="nav-item py-4 px-2 text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300">Методы</a>
-                    <a href="#comparison" class="nav-item py-4 px-2 text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300">Сравнение</a>
-                    <a href="#implementation" class="nav-item py-4 px-2 text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300">Реализация</a>
-                    <a href="#demo" class="nav-item py-4 px-2 text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300">Шифрование</a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <button id="themeToggle" class="p-2 rounded-full focus:outline-none">
-                        <i class="fas fa-moon text-gray-700 dark:text-yellow-300" id="darkIcon"></i>
-                        <i class="fas fa-sun text-gray-700 dark:text-yellow-300 hidden" id="lightIcon"></i>
-                    </button>
-                    <div class="md:hidden flex items-center">
-                        <button class="outline-none mobile-menu-button">
-                            <i class="fas fa-bars text-gray-500 dark:text-gray-300 text-xl"></i>
-                        </button>
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="#hero" class="py-5 px-3 nav-item text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">Главная</a>
+                        <a href="#features" class="py-5 px-3 nav-item text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">Возможности</a>
+                        <a href="#demo" class="py-5 px-3 nav-item text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">Демонстрация</a>
+                        <a href="#about" class="py-5 px-3 nav-item text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">О проекте</a>
                     </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-3">
+                    <button id="themeToggle" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">
+                        <i id="darkIcon" class="fas fa-moon text-gray-700 dark:text-gray-300 text-xl hidden"></i>
+                        <i id="lightIcon" class="fas fa-sun text-gray-700 dark:text-gray-300 text-xl"></i>
+                    </button>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button class="mobile-menu-button p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">
+                        <i class="fas fa-bars text-gray-700 dark:text-gray-300 text-xl"></i>
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="hidden mobile-menu">
-            <ul>
-                <li><a href="#intro" class="block text-sm px-2 py-4 hover:bg-blue-600 hover:text-white transition duration-300">Главная</a></li>
-                <li><a href="#methods" class="block text-sm px-2 py-4 hover:bg-blue-600 hover:text-white transition duration-300">Методы</a></li>
-                <li><a href="#comparison" class="block text-sm px-2 py-4 hover:bg-blue-600 hover:text-white transition duration-300">Сравнение</a></li>
-                <li><a href="#implementation" class="block text-sm px-2 py-4 hover:bg-blue-600 hover:text-white transition duration-300">Реализация</a></li>
-                <li><a href="#demo" class="block text-sm px-2 py-4 hover:bg-blue-600 hover:text-white transition duration-300">Шифрование</a></li>
-            </ul>
+        <div class="mobile-menu hidden md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <a href="#hero" class="block py-2 px-4 text-sm nav-item text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">Главная</a>
+            <a href="#features" class="block py-2 px-4 text-sm nav-item text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">Возможности</a>
+            <a href="#demo" class="block py-2 px-4 text-sm nav-item text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">Демонстрация</a>
+            <a href="#about" class="block py-2 px-4 text-sm nav-item text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">О проекте</a>
+            <button id="themeToggleMobile" class="w-full text-left py-2 px-4 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300 flex items-center">
+                <i id="darkIconMobile" class="fas fa-moon text-gray-700 dark:text-gray-300 text-lg mr-2 hidden"></i>
+                <i id="lightIconMobile" class="fas fa-sun text-gray-700 dark:text-gray-300 text-lg mr-2"></i>
+                <span>Переключить тему</span>
+            </button>
         </div>
     </nav>
 
-    <!-- Герой-секция -->
-    <section id="intro" class="gradient-bg dark:gradient-bg-dark text-white py-20">
-        <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6">Методы шифрования данных <br>в web-проектах</h1>
-            <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto">Исследование современных подходов к защите информации в веб-приложениях</p>
-            <div class="typewriter text-xl mb-12">Безопасность данных - основа доверия в цифровую эпоху</div>
-            <a href="#methods" class="bg-white text-blue-600 dark:bg-gray-800 dark:text-blue-400 font-bold rounded-full py-4 px-8 shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-300">
-                <i class="fas fa-arrow-down mr-2"></i> Узнать больше
-            </a>
+    <section id="hero" class="relative py-20 px-6 text-center text-white gradient-bg dark:gradient-bg-dark overflow-hidden">
+        <div class="absolute inset-0 z-0 bg-pattern opacity-10"></div>
+        <div class="container mx-auto relative z-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4 animate-fade-in-down">
+                Надежное Шифрование Данных в Web
+            </h1>
+            <p class="text-lg md:text-xl mb-8 opacity-0 animate-fade-in delay-500">
+                Курсовая работа: "Методы шифрования данных в web-проектах".
+                Изучите и протестируйте современные криптографические алгоритмы прямо в браузере.
+            </p>
+            <div class="space-x-4 opacity-0 animate-fade-in delay-1000">
+                <a href="#demo" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                    Начать шифрование
+                </a>
+                <a href="#about" class="bg-transparent border-2 border-white hover:bg-white hover:text-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                    Подробнее о проекте
+                </a>
+            </div>
         </div>
     </section>
 
-    <!-- О курсовой -->
-    <section class="bg-white dark:bg-gray-800 py-16">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0">
-                    <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">О курсовой работе</h2>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6 text-lg">Данная работа посвящена исследованию современных методов шифрования данных, применяемых в веб-проектах. В эпоху цифровой трансформации вопросы информационной безопасности становятся критически важными для любого веб-приложения.</p>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6 text-lg">В работе рассматриваются как симметричные, так и асимметричные алгоритмы шифрования, методы хеширования, а также современные протоколы защиты данных при передаче по сети.</p>
-                    <div class="flex flex-wrap gap-4">
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-2 rounded-full">Web Security</span>
-                        <span class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-4 py-2 rounded-full">Cryptography</span>
-                        <span class="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-4 py-2 rounded-full">Data Protection</span>
+    <section id="features" class="py-20 px-6 bg-gray-100 dark:bg-gray-800">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-12">Ключевые Возможности</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white dark:bg-gray-700 p-8 rounded-lg shadow-lg card-hover transition-colors duration-300">
+                    <div class="text-blue-600 dark:text-blue-400 mb-4">
+                        <i class="fas fa-shield-alt text-5xl"></i>
                     </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">Полностью Клиентское</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Все операции шифрования и дешифрования происходят непосредственно в вашем браузере,
+                        обеспечивая максимальную конфиденциальность. Данные никогда не покидают ваше устройство.
+                    </p>
                 </div>
-                <div class="md:w-1/2">
-                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Шифрование данных" class="rounded-lg shadow-2xl">
+                <div class="bg-white dark:bg-gray-700 p-8 rounded-lg shadow-lg card-hover transition-colors duration-300">
+                    <div class="text-green-600 dark:text-green-400 mb-4">
+                        <i class="fas fa-globe text-5xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">Использование Web Crypto API</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Приложение использует стандартизированный Web Crypto API,
+                        предоставляемый современными браузерами, для безопасных и быстрых криптографических операций.
+                    </p>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-8 rounded-lg shadow-lg card-hover transition-colors duration-300">
+                    <div class="text-purple-600 dark:text-purple-400 mb-4">
+                        <i class="fas fa-code text-5xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">Разнообразие Алгоритмов</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Демонстрация включает поддержку популярных алгоритмов, таких как AES-GCM
+                        для симметричного шифрования и RSA-OAEP для асимметричного.
+                    </p>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-8 rounded-lg shadow-lg card-hover transition-colors duration-300">
+                    <div class="text-yellow-600 dark:text-yellow-400 mb-4">
+                        <i class="fas fa-file-alt text-5xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">Шифрование Текста</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Легко шифруйте и дешифруйте текстовые сообщения,
+                        получая наглядное представление о работе криптографии.
+                    </p>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-8 rounded-lg shadow-lg card-hover transition-colors duration-300">
+                    <div class="text-red-600 dark:text-red-400 mb-4">
+                        <i class="fas fa-file-code text-5xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">Шифрование Файлов</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Возможность шифровать и дешифровать файлы любого размера с помощью потоковой обработки,
+                        оптимизированной для больших объемов данных.
+                    </p>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-8 rounded-lg shadow-lg card-hover transition-colors duration-300">
+                    <div class="text-teal-600 dark:text-teal-400 mb-4">
+                        <i class="fas fa-key text-5xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">Генерация и Экспорт Ключей</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Генерируйте криптографические ключи прямо в браузере и
+                        экспортируйте их для использования в других приложениях.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Методы шифрования -->
-    <section id="methods" class="bg-gray-50 dark:bg-gray-800 py-16">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-16">Методы шифрования данных</h2>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Симметричное шифрование -->
-                <div class="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden card-hover transition duration-500">
-                    <div class="p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4">
-                                <i class="fas fa-key text-blue-600 dark:text-blue-300 text-xl"></i>
+    <section id="demo" class="py-20 px-6 bg-white dark:bg-gray-900">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-12">Демонстрация Шифрования</h2>
+            <div class="max-w-4xl mx-auto bg-gray-100 dark:bg-gray-800 p-8 rounded-lg shadow-xl encryption-demo transition-colors duration-300">
+                <div class="mb-8 flex justify-center space-x-4">
+                    <button id="textMethodBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 active-method-btn">
+                        Шифрование текста
+                    </button>
+                    <button id="fileMethodBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 inactive-method-btn">
+                        Шифрование файлов
+                    </button>
+                </div>
+
+                <div id="textEncryptionSection" class="method-section active">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="encryptionMethod" class="block text-left text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Метод шифрования:</label>
+                            <select id="encryptionMethod" class="block w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 transition-colors duration-300">
+                                <option value="aes-gcm">AES-GCM (Симметричное)</option>
+                                <option value="rsa-oaep">RSA-OAEP (Асимметричное)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="passwordInput" class="block text-left text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Пароль (для AES-GCM):</label>
+                            <input type="password" id="passwordInput" class="block w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 transition-colors duration-300" placeholder="Введите пароль">
+                            <div class="password-strength">
+                                <div class="password-strength-bar" id="passwordStrengthBar"></div>
                             </div>
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-white">Симметричное шифрование</h3>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4">Использует один ключ для шифрования и дешифрования данных. Быстрое и эффективное для больших объемов данных.</p>
-                        <ul class="text-gray-600 dark:text-gray-300 space-y-2 mb-4">
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-2"></i> AES (Advanced Encryption Standard)
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-2"></i> DES (Data Encryption Standard)
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-2"></i> 3DES (Triple DES)
-                            </li>
-                        </ul>
-                        <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
-                            <p class="text-blue-800 dark:text-blue-200 text-sm"><i class="fas fa-info-circle mr-2"></i> Применение: шифрование локальных данных, защита файлов</p>
+                            <div class="password-requirements mt-2 text-left">
+                                <p class="requirement" id="reqLength"><i class="fas fa-times text-red-500 mr-2"></i> Минимум 8 символов</p>
+                                <p class="requirement" id="reqUppercase"><i class="fas fa-times text-red-500 mr-2"></i> Заглавная буква</p>
+                                <p class="requirement" id="reqLowercase"><i class="fas fa-times text-red-500 mr-2"></i> Строчная буква</p>
+                                <p class="requirement" id="reqNumber"><i class="fas fa-times text-red-500 mr-2"></i> Цифра</p>
+                                <p class="requirement" id="reqSpecial"><i class="fas fa-times text-red-500 mr-2"></i> Специальный символ</p>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="mb-6">
+                        <label for="inputText" class="block text-left text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Исходный текст:</label>
+                        <textarea id="inputText" rows="6" class="block w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 transition-colors duration-300" placeholder="Введите текст для шифрования/дешифрования"></textarea>
+                    </div>
+
+                    <div class="flex flex-wrap justify-center gap-4 mb-6">
+                        <button id="encryptTextBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-lock mr-2"></i> Зашифровать
+                        </button>
+                        <button id="decryptTextBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-unlock-alt mr-2"></i> Расшифровать
+                        </button>
+                        <button id="generateKeysBtn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-key mr-2"></i> Генерировать ключи (RSA)
+                        </button>
+                        <button id="importKeysBtn" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-file-import mr-2"></i> Импортировать ключи (RSA)
+                        </button>
+                        <input type="file" id="importKeysFile" class="hidden" accept=".json">
+                    </div>
+
+                    <div class="relative mb-6">
+                        <label for="outputText" class="block text-left text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Результат:</label>
+                        <textarea id="outputText" rows="6" readonly class="block w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 transition-colors duration-300"></textarea>
+                        <button id="copyOutputBtn" class="absolute top-2 right-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-white px-3 py-1 rounded-md text-sm transition-all duration-200 flex items-center copy-btn">
+                            <i class="fas fa-copy mr-1"></i> Копировать
+                        </button>
+                    </div>
+                    <div id="textMessage" class="text-red-500 dark:text-red-400 text-sm text-center"></div>
                 </div>
-                
-                <!-- Асимметричное шифрование -->
-                <div class="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden card-hover transition duration-500">
-                    <div class="p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-purple-100 dark:bg-purple-900 p-3 rounded-full mr-4">
-                                <i class="fas fa-key text-purple-600 dark:text-purple-300 text-xl"></i>
-                                <i class="fas fa-key text-purple-600 dark:text-purple-300 text-xl -ml-2"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-white">Асимметричное шифрование</h3>
+
+                <div id="fileEncryptionSection" class="method-section hidden">
+                    <div class="mb-6">
+                        <label for="fileInput" class="block text-left text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Выберите файл:</label>
+                        <input type="file" id="fileInput" class="block w-full text-sm text-gray-900 dark:text-white
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-blue-50 dark:file:bg-blue-900 file:text-blue-700 dark:file:text-blue-200
+                            hover:file:bg-blue-100 dark:hover:file:bg-blue-800 transition-colors duration-300"/>
+                    </div>
+                    <div class="mb-6">
+                        <label for="filePasswordInput" class="block text-left text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Пароль (для файлов AES-GCM):</label>
+                        <input type="password" id="filePasswordInput" class="block w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 transition-colors duration-300" placeholder="Введите пароль">
+                        <div class="password-strength">
+                            <div class="password-strength-bar" id="filePasswordStrengthBar"></div>
                         </div>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4">Использует пару ключей: открытый для шифрования и закрытый для дешифрования. Обеспечивает безопасный обмен ключами.</p>
-                        <ul class="text-gray-600 dark:text-gray-300 space-y-2 mb-4">
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-2"></i> RSA (Rivest-Shamir-Adleman)
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-2"></i> ECC (Elliptic Curve Cryptography)
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-2"></i> ElGamal
-                            </li>
-                        </ul>
-                        <div class="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-lg">
-                            <p class="text-purple-800 dark:text-purple-200 text-sm"><i class="fas fa-info-circle mr-2"></i> Применение: SSL/TLS, цифровые подписи</p>
+                        <div class="password-requirements mt-2 text-left">
+                            <p class="requirement" id="fileReqLength"><i class="fas fa-times text-red-500 mr-2"></i> Минимум 8 символов</p>
+                            <p class="requirement" id="fileReqUppercase"><i class="fas fa-times text-red-500 mr-2"></i> Заглавная буква</p>
+                            <p class="requirement" id="fileReqLowercase"><i class="fas fa-times text-red-500 mr-2"></i> Строчная буква</p>
+                            <p class="requirement" id="fileReqNumber"><i class="fas fa-times text-red-500 mr-2"></i> Цифра</p>
+                            <p class="requirement" id="fileReqSpecial"><i class="fas fa-times text-red-500 mr-2"></i> Специальный символ</p>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Хеширование -->
-                <div class="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden card-hover transition duration-500">
-                    <div class="p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-green-100 dark:bg-green-900 p-3 rounded-full mr-4">
-                                <i class="fas fa-fingerprint text-green-600 dark:text-green-300 text-xl"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-white">Хеширование</h3>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4">Преобразование данных в уникальную строку фиксированной длины. Необратимое преобразование для хранения паролей.</p>
-                        <ul class="text-gray-600 dark:text-gray-300 space-y-2 mb-4">
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-2"></i> SHA-256, SHA-3
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-2"></i> bcrypt
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-2"></i> Argon2
-                            </li>
-                        </ul>
-                        <div class="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg">
-                            <p class="text-green-800 dark:text-green-200 text-sm"><i class="fas fa-info-circle mr-2"></i> Применение: хранение паролей, проверка целостности</p>
-                        </div>
+                    
+                    <div class="flex flex-wrap justify-center gap-4 mb-6">
+                        <button id="encryptFileBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-file-export mr-2"></i> Зашифровать файл
+                        </button>
+                        <button id="decryptFileBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-file-import mr-2"></i> Расшифровать файл
+                        </button>
+                    </div>
+                    <div id="fileMessage" class="text-red-500 dark:text-red-400 text-sm text-center"></div>
+                    <div id="progressBarContainer" class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700 mt-4 hidden">
+                        <div id="progressBar" class="bg-blue-600 h-4 rounded-full text-xs text-white flex items-center justify-center" style="width: 0%;">0%</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Сравнение методов -->
-    <section id="comparison" class="bg-white dark:bg-gray-800 py-16">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-16">Сравнение методов шифрования</h2>
-            
-            <div class="overflow-x-auto">
-                <table class="min-w-full bg-white dark:bg-gray-700 rounded-lg overflow-hidden">
-                    <thead class="bg-gray-100 dark:bg-gray-600">
-                        <tr>
-                            <th class="py-3 px-4 text-left font-semibold text-gray-700 dark:text-gray-200">Критерий</th>
-                            <th class="py-3 px-4 text-left font-semibold text-gray-700 dark:text-gray-200">Симметричное</th>
-                            <th class="py-3 px-4 text-left font-semibold text-gray-700 dark:text-gray-200">Асимметричное</th>
-                            <th class="py-3 px-4 text-left font-semibold text-gray-700 dark:text-gray-200">Хеширование</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
-                        <tr class="bg-white dark:bg-gray-700">
-                            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 font-medium">Скорость</td>
-                            <td class="py-3 px-4 text-green-600 dark:text-green-400">Высокая</td>
-                            <td class="py-3 px-4 text-yellow-600 dark:text-yellow-400">Средняя</td>
-                            <td class="py-3 px-4 text-green-600 dark:text-green-400">Высокая</td>
-                        </tr>
-                        <tr class="bg-gray-50 dark:bg-gray-600">
-                            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 font-medium">Безопасность</td>
-                            <td class="py-3 px-4 text-yellow-600 dark:text-yellow-400">Зависит от длины ключа</td>
-                            <td class="py-3 px-4 text-green-600 dark:text-green-400">Высокая</td>
-                            <td class="py-3 px-4 text-green-600 dark:text-green-400">Высокая (для современных алгоритмов)</td>
-                        </tr>
-                        <tr class="bg-white dark:bg-gray-700">
-                            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 font-medium">Управление ключами</td>
-                            <td class="py-3 px-4 text-red-500 dark:text-red-400">Сложное</td>
-                            <td class="py-3 px-4 text-green-600 dark:text-green-400">Простое</td>
-                            <td class="py-3 px-4 text-gray-700 dark:text-gray-300">Не требуется</td>
-                        </tr>
-                        <tr class="bg-gray-50 dark:bg-gray-600">
-                            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 font-medium">Использование</td>
-                            <td class="py-3 px-4 dark:text-gray-300">Шифрование данных</td>
-                            <td class="py-3 px-4 dark:text-gray-300">Обмен ключами, цифровые подписи</td>
-                            <td class="py-3 px-4 dark:text-gray-300">Хранение паролей, проверка целостности</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="mt-12 bg-blue-50 dark:bg-blue-900/30 p-6 rounded-lg border-l-4 border-blue-500">
-                <h3 class="text-xl font-bold text-blue-800 dark:text-blue-200 mb-3">Выводы</h3>
-                <p class="text-blue-700 dark:text-blue-200">В современных веб-проектах оптимальным подходом является комбинация методов: асимметричное шифрование для безопасного обмена ключами, симметричное - для шифрования данных, и хеширование - для защиты паролей. Протоколы типа TLS используют гибридный подход, сочетая преимущества разных методов.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Реализация в веб-проектах -->
-    <section id="implementation" class="bg-gray-50 dark:bg-gray-800 py-16">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-16">Реализация в веб-проектах</h2>
-            
-            <div class="flex flex-col md:flex-row gap-8 mb-12">
-                <div class="md:w-1/2 bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md">
-                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                        <i class="fas fa-lock-open text-blue-500 mr-3"></i> HTTPS и TLS/SSL
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">Современный стандарт защиты данных при передаче по сети. Использует гибридное шифрование:</p>
-                    <ul class="text-gray-600 dark:text-gray-300 space-y-2 mb-4 pl-5">
-                        <li class="list-disc">Асимметричное шифрование для обмена ключами</li>
-                        <li class="list-disc">Симметричное шифрование для передачи данных</li>
-                        <li class="list-disc">Цифровые сертификаты для аутентификации</li>
+    <section id="about" class="py-20 px-6 bg-gray-100 dark:bg-gray-800">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white text-center mb-12">О Проекте</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="text-gray-800 dark:text-gray-300 leading-relaxed space-y-6">
+                    <p>Этот проект является курсовой работой по дисциплине "Информационная безопасность" на тему "Методы шифрования данных в web-проектах". Цель проекта — наглядно продемонстрировать принципы работы современных криптографических алгоритмов, используемых в веб-приложениях.</p>
+                    <p>Основное внимание уделяется практическому применению <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-md font-mono text-blue-600 dark:text-blue-400">Web Crypto API</code>, который позволяет безопасно выполнять криптографические операции непосредственно в браузере пользователя, без передачи конфиденциальных данных на сервер.</p>
+                    <p>Приложение позволяет тестировать шифрование и дешифрование текстовых данных, а также файлов, используя алгоритмы <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-md font-mono text-green-600 dark:text-green-400">AES-GCM</code> (для симметричного шифрования) и <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-md font-mono text-purple-600 dark:text-purple-400">RSA-OAEP</code> (для асимметричного шифрования). Также предусмотрена генерация и импорт ключей для RSA.</p>
+                    <p>Проект направлен на повышение осведомленности о важности криптографии в веб-разработке и демонстрацию того, как современные веб-технологии позволяют создавать безопасные решения.</p>
+                    <p class="text-center">
+                        <i class="fas fa-circle-notch text-blue-500 text-4xl animate-spin-slow"></i>
+                    </p>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-8 rounded-lg shadow-lg">
+                    <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Используемые технологии:</h4>
+                    <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                        <li><i class="fab fa-html5 text-orange-500 mr-2"></i> HTML5 & CSS3</li>
+                        <li><i class="fab fa-js-square text-yellow-500 mr-2"></i> JavaScript (ES6+)</li>
+                        <li><i class="fas fa-cogs text-gray-500 mr-2"></i> Web Crypto API</li>
+                        <li><i class="fab fa-tailwind-css text-teal-500 mr-2"></i> Tailwind CSS (для стилизации)</li>
+                        <li><i class="fas fa-layer-group text-blue-500 mr-2"></i> Webpack (для сборки модулей, если используется)</li>
                     </ul>
-                    <div class="bg-yellow-50 dark:bg-yellow-900/30 p-4 rounded-lg border-l-4 border-yellow-400">
-                        <p class="text-yellow-800 dark:text-yellow-200 text-sm"><i class="fas fa-exclamation-triangle mr-2"></i> Важно: всегда использовать актуальные версии протоколов (TLS 1.2/1.3)</p>
+                    <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-500">
+                        <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Как это работает?</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Демонстрация использует Web Crypto API для реального шифрования данных в браузере. Все операции выполняются локально, данные не отправляются на сервер. Для шифрования файлов используется потоковая обработка с минимальным использованием памяти.</p>
                     </div>
-                </div>
-                
-                <div class="md:w-1/2 bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md">
-                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                        <i class="fas fa-user-shield text-green-500 mr-3"></i> Хранение паролей
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">Правильные практики хранения учетных данных:</p>
-                    <ul class="text-gray-600 dark:text-gray-300 space-y-2 mb-4 pl-5">
-                        <li class="list-disc">Всегда использовать хеширование (никогда не хранить в открытом виде)</li>
-                        <li class="list-disc">Применять "соль" (salt) для защиты от rainbow-таблиц</li>
-                        <li class="list-disc">Использовать адаптивные функции (bcrypt, Argon2)</li>
-                    </ul>
-                    <div class="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg">
-                        <p class="text-green-800 dark:text-green-200 text-sm"><i class="fas fa-check-circle mr-2"></i> Рекомендация: минимальная стоимость фактора для bcrypt - 12</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                    <i class="fas fa-code text-purple-500 mr-3"></i> Пример кода: шифрование в JavaScript
-                </h3>
-                <div class="bg-gray-800 rounded-lg p-4 mb-4 overflow-x-auto">
-                    <pre class="text-gray-300 text-sm"><code>// Пример хеширования с использованием Argon2
-async function hashWithArgon2(password) {
-    // Подключаем библиотеку argon2-browser
-    const argon2 = await import('https://cdn.jsdelivr.net/npm/argon2-browser@1.18.0/dist/argon2-bundled.min.js');
-    
-    // Генерируем случайную соль
-    const salt = window.crypto.getRandomValues(new Uint8Array(16));
-    
-    // Хешируем пароль с параметрами
-    const result = await argon2.hash({
-        pass: password,
-        salt: salt,
-        time: 3,       // Количество итераций
-        mem: 65536,    // Используемая память в KiB
-        hashLen: 32,   // Длина хеша в байтах
-        parallelism: 1 // Количество потоков
-    });
-    
-    return result.encoded;
-}
-
-// Пример использования
-const password = "mySecretPassword123";
-hashWithArgon2(password).then(hash => {
-    console.log(`Argon2 hash: ${hash}`);
-});</code></pre>
-                </div>
-                <p class="text-gray-600 dark:text-gray-300 text-sm"><i class="fas fa-info-circle mr-2"></i> Для использования Argon2 в браузере требуется подключение дополнительной библиотеки</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Демонстрация -->
-    <section id="demo" class="encryption-demo py-16">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-12">Демонстрация шифрования</h2>
-            
-            <div class="flex flex-col md:flex-row gap-8 mb-12">
-                <!-- Шифрование текста -->
-                <div class="md:w-1/2 bg-white dark:bg-gray-700 rounded-xl shadow-xl overflow-hidden">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                            <i class="fas fa-font text-blue-500 mr-3"></i> Шифрование текста
-                        </h3>
-                        <div class="grid md:grid-cols-1 gap-6">
-                            <div>
-                                <textarea id="inputText" class="w-full h-24 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" placeholder="Введите текст для шифрования..." required></textarea>
-                                <div id="inputError" class="error-message">Пожалуйста, введите текст для шифрования</div>
-                                
-                                <div class="mt-4">
-                                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Метод:</label>
-                                    <select id="encryptionMethod" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
-                                        <option value="aes">AES-GCM (симметричный)</option>
-                                        <option value="rsa">RSA-OAEP (асимметричный)</option>
-                                        <option value="argon2">Argon2 (хеширование)</option>
-                                    </select>
-                                </div>
-                                
-                                <div id="passwordContainer" class="mt-4">
-                                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Пароль (для AES):</label>
-                                    <input type="password" id="password" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" placeholder="Введите пароль">
-                                    <div id="passwordError" class="error-message">Пароль должен содержать минимум 8 символов</div>
-                                    
-                                    <!-- Индикатор сложности пароля -->
-                                    <div class="password-strength mt-2">
-                                        <div id="passwordStrengthBar" class="password-strength-bar"></div>
-                                    </div>
-                                    
-                                    <!-- Требования к паролю -->
-                                    <div class="password-requirements">
-                                        <div class="requirement invalid" id="lengthReq">
-                                            <i class="fas fa-circle"></i>
-                                            <span>Минимум 8 символов</span>
-                                        </div>
-                                        <div class="requirement invalid" id="uppercaseReq">
-                                            <i class="fas fa-circle"></i>
-                                            <span>Хотя бы одна заглавная буква</span>
-                                        </div>
-                                        <div class="requirement invalid" id="numberReq">
-                                            <i class="fas fa-circle"></i>
-                                            <span>Хотя бы одна цифра</span>
-                                        </div>
-                                        <div class="requirement invalid" id="specialReq">
-                                            <i class="fas fa-circle"></i>
-                                            <span>Хотя бы один спецсимвол (!@#$%^&*)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <button id="encryptBtn" class="mt-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-bold py-2 px-6 rounded-lg transition duration-300 flex items-center justify-center w-full">
-                                    <span id="encryptText"><i class="fas fa-lock mr-2"></i> Зашифровать</span>
-                                    <span id="encryptSpinner" class="hidden spinner"></span>
-                                </button>
-                            </div>
-                            <div class="mt-4">
-                                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Результат</h3>
-                                <div id="outputResult" class="w-full h-24 p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 overflow-auto">
-                                    <p class="text-gray-500 dark:text-gray-400 text-center">Здесь появится результат шифрования...</p>
-                                </div>
-                                <button id="copyBtn" class="mt-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 font-medium py-1 px-3 rounded text-sm copy-btn flex items-center justify-center w-full">
-                                    <i class="fas fa-copy mr-2"></i> Копировать результат
-                                </button>
-                                <div id="keyInfo" class="mt-4 hidden">
-                                    <label class="block text-gray-700 dark:text-gray-300 mb-1">Дополнительная информация:</label>
-                                    <div class="bg-gray-100 dark:bg-gray-800 p-2 rounded-lg text-sm break-all text-gray-800 dark:text-gray-200"></div>
-                                </div>
-                                <button id="decryptBtn" class="mt-4 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white font-bold py-2 px-6 rounded-lg transition duration-300 hidden flex items-center justify-center w-full">
-                                    <span id="decryptText"><i class="fas fa-lock-open mr-2"></i> Расшифровать</span>
-                                    <span id="decryptSpinner" class="hidden spinner"></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Шифрование файлов -->
-                <div class="md:w-1/2 bg-white dark:bg-gray-700 rounded-xl shadow-xl overflow-hidden">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                            <i class="fas fa-file-alt text-green-500 mr-3"></i> Шифрование файлов
-                        </h3>
-                        <div class="grid md:grid-cols-1 gap-6">
-                            <div>
-                                <div class="w-full p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 text-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition duration-300" id="dropZone">
-                                    <i class="fas fa-file-upload text-3xl text-gray-400 dark:text-gray-500 mb-2"></i>
-                                    <p class="text-gray-600 dark:text-gray-400">Перетащите файл сюда или <span class="text-blue-500">выберите файл</span></p>
-                                    <input type="file" id="fileInput" class="hidden">
-                                </div>
-                                <div id="fileInfo" class="mt-4 hidden">
-                                    <div class="flex items-center p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
-                                        <i class="fas fa-file-alt text-blue-500 mr-3 text-lg"></i>
-                                        <div class="flex-1">
-                                            <p class="font-medium text-blue-800 dark:text-blue-200" id="fileName">filename.txt</p>
-                                            <p class="text-sm text-blue-600 dark:text-blue-300" id="fileSize">0 KB</p>
-                                        </div>
-                                        <button id="removeFileBtn" class="ml-2 text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-4">
-                                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Метод шифрования файла:</label>
-                                    <select id="fileEncryptionMethod" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
-                                        <option value="aes">AES-GCM (рекомендуется)</option>
-                                        <option value="aes-ctr">AES-CTR</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="mt-4">
-                                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Пароль для шифрования файла:</label>
-                                    <input type="password" id="filePassword" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" placeholder="Введите надежный пароль">
-                                    <div id="filePasswordError" class="error-message">Пароль должен содержать минимум 8 символов</div>
-                                </div>
-                                
-                                <div class="grid grid-cols-2 gap-4 mt-4">
-                                    <button id="encryptFileBtn" class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center w-full disabled:opacity-50 disabled:cursor-not-allowed">
-                                        <span id="encryptFileText"><i class="fas fa-lock mr-2"></i> Зашифровать</span>
-                                        <span id="encryptFileSpinner" class="hidden spinner"></span>
-                                    </button>
-                                    <button id="decryptFileBtn" class="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center w-full disabled:opacity-50 disabled:cursor-not-allowed">
-                                        <span id="decryptFileText"><i class="fas fa-lock-open mr-2"></i> Расшифровать</span>
-                                        <span id="decryptFileSpinner" class="hidden spinner"></span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="mt-4" id="fileResult">
-                                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-600">
-                                    <div id="fileStatus" class="text-center text-gray-500 dark:text-gray-400">
-                                        Выберите файл и нажмите кнопку для начала работы
-                                    </div>
-                                    <div id="fileProgress" class="hidden mt-4">
-                                        <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                                            <div id="fileProgressBar" class="h-full bg-blue-500 transition-all duration-300" style="width: 0%"></div>
-                                        </div>
-                                        <div class="flex justify-between mt-1">
-                                            <span class="text-xs text-gray-500 dark:text-gray-400" id="fileProgressText">0%</span>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400" id="fileProgressBytes">0/0 байт</span>
-                                        </div>
-                                    </div>
-                                    <div id="fileActions" class="hidden mt-4">
-                                        <a id="downloadFileBtn" class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center">
-                                            <i class="fas fa-download mr-2"></i> Скачать результат
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white dark:bg-gray-700 rounded-xl shadow-xl overflow-hidden max-w-3xl mx-auto">
-                <div class="bg-gray-100 dark:bg-gray-600 px-6 py-4 border-t border-gray-200 dark:border-gray-500">
-                    <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Как это работает?</h4>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm">Демонстрация использует Web Crypto API для реального шифрования данных в браузере. Все операции выполняются локально, данные не отправляются на сервер. Для шифрования файлов используется потоковая обработка с минимальным использованием памяти.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Подвал -->
     <footer class="bg-gray-900 text-white py-8">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
@@ -501,9 +317,8 @@ hashWithArgon2(password).then(hash => {
             </div>
         </div>
     </footer>
-<script src="js/theme.js"></script>
-<script src="js/encryption.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/argon2-browser@1.18.0/dist/argon2-bundled.min.js"></script> 
 
+    <script src="js/theme.js"></script>
+    <script src="js/encryption.js"></script>
 </body>
 </html>
