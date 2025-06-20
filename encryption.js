@@ -1,24 +1,4 @@
-tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    transitionProperty: {
-                        'colors': 'background-color, border-color, color, fill, stroke',
-                    },
-                    animation: {
-                        'spin-slow': 'spin 2s linear infinite',
-                    }
-                }
-            }
-        }
-    
-
-
-
-
-
-
-        // Мобильное меню - используем IntersectionObserver для ленивой загрузки
+// Мобильное меню - используем IntersectionObserver для ленивой загрузки
         const btn = document.querySelector('.mobile-menu-button');
         const menu = document.querySelector('.mobile-menu');
 
